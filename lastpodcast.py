@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+import time
 
 # Url of the podcast web page from LaunchPadone
 url = 'https://www.launchpadone.com/PODCAST-PROFILE-URL'
@@ -29,5 +30,9 @@ def check_new_podcast(url, last_date):
 
 last_known_date = datetime(2024, 10, 23) 
 
-# check for new episodes.
-check_new_podcast(url, last_known_date)
+# check for new episodes. Every 5 minutes it just checks and the program ends when a new podcast is detected.
+while True:
+    if check_new_podcast(url, last_known_date):
+        break
+    else:
+        time.sleep(300)
