@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 import time
+import argparse
 
 # Url of the podcast web page from LaunchPadone
 url = 'https://www.launchpadone.com/PODCAST-PROFILE-URL'
@@ -28,7 +29,16 @@ def check_new_podcast(url, last_date):
         print("Nessun nuovo episodio pubblicato.")
         return False
 
-last_known_date = datetime(2024, 10, 23) 
+parser = argparse.ArgumentParser(description="Check if there's a new published podcast.")
+parser.add_argument("last_date", type=str, help="date of last podcast in this format MM/DD/YYYY")
+args = parser.parse_args()
+
+try:
+    last_known_date = datetime.strptime(args.last_date, "%m/%d/%Y")
+except ValueError:
+    print("Error: date must be in this format MM/DD/YYYY")
+    exit(1)
+ 
 
 # check for new episodes. Every 5 minutes it just checks and the program ends when a new podcast is detected.
 while True:
